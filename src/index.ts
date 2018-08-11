@@ -6,7 +6,7 @@ class Game extends ex.Engine {
     constructor() {
         super({width: 1280, height: 720, displayMode: ex.DisplayMode.FullScreen});
         this.setAntialiasing(false);
-        this.backgroundColor = ex.Color.Black;
+        this.backgroundColor = ex.Color.fromHex('#696969');
     }
 
     public start() {

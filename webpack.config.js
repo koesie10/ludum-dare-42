@@ -42,6 +42,7 @@ module.exports = ({mode, presets} = {mode: "production", presets: []}) => {
                 alias: {
                     actors: path.join(__dirname, 'src', 'actors'),
                     scenes: path.join(__dirname, 'src', 'scenes'),
+                    util: path.join(__dirname, 'src', 'util'),
                     '@': path.join(__dirname, 'src')
                 }
             },

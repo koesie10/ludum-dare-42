@@ -8,6 +8,7 @@ export enum Animation {
 
 export class Machinery extends ex.Actor {
     pourAnimation: ex.Animation;
+    pouring: boolean = false;
 
     constructor(x: number, y: number) {
         super(x, y, 128, 128);
@@ -24,5 +25,37 @@ export class Machinery extends ex.Actor {
         this.addDrawing(Animation.POUR, this.pourAnimation);
 
         this.setDrawing(Animation.IDLE);
+    }
+
+    /**
+     * @param onDone
+     *
+     * @return boolean False if already working, true if machine available and has started working
+     */
+    public startPouring(onDone: () => void): boolean {
+        if (this.pouring) {
+            return false;
+        }
+
+        this.pouring = true;
+
+        this.pourAnimation.reset();
+        this.setDrawing(Animation.POUR);
+
+        const timer = new ex.Timer(() => {
+            if (!this.pourAnimation.isDone()) {
+                return;
+            }
+            timer.cancel();
+
+            this.setDrawing(Animation.IDLE);
+
+            this.pouring = false;
+            onDone();
+        }, 100, true);
+
+        this.scene.addTimer(timer);
+
+        return true;
     }
 }
