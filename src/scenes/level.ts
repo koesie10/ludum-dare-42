@@ -47,7 +47,7 @@ export class BaseLevel extends ex.Scene {
             this.timeUntilNextSpawn = spawn.timeUntilNextSpawn;
             const queue = this.queues[spawn.queueId];
 
-            const human = new Human(queue.spawnX, queue.spawnY);
+            const human = new Human(queue.options.spawnX, queue.options.spawnY);
 
             if (queue.addToQueue(human)) {
                 this.add(human);

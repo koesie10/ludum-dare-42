@@ -41,12 +41,12 @@ export class Human extends ex.Actor {
     }
 
     public onInitialize(engine: ex.Engine) {
-        const playerSheet = new ex.SpriteSheet(Resources.Textures.HumanBlue, 6, 1, 7, 7);
+        const playerSheet = new ex.SpriteSheet(Resources.Textures.HumanBlue, 9, 1, 7, 7);
 
         this.addDrawing(Animation.IDLE, playerSheet.getAnimationBetween(engine, 0, 1, 200));
         this.addDrawing(Animation.WALKING, playerSheet.getAnimationBetween(engine, 0, 4, 250));
         this.addDrawing(Animation.SELECTED, playerSheet.getAnimationBetween(engine, 4, 5, 200));
-        this.addDrawing(Animation.GLASS, playerSheet.getAnimationBetween(engine, 5, 6, 200));
+        this.addDrawing(Animation.GLASS, playerSheet.getAnimationBetween(engine, 5, 9, 250));
 
         this.setDrawing(Animation.IDLE);
 

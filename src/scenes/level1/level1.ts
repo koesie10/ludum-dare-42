@@ -13,8 +13,30 @@ export class Level1 extends BaseLevel {
         this.machinery = new Machinery(880, 336, 0.04);
 
         this.queues = [
-            new Queue(0, -32, 688, 100, 9, this.machinery, this.onServed.bind(this), this.onFull.bind(this)),
-            new Queue(1, 220, engine.drawHeight + 32, 220, 9, this.machinery, this.onServed.bind(this), this.onFull.bind(this))
+            new Queue({
+                id: 0,
+                spawnX: -32,
+                spawnY: 688,
+                despawnX: 160,
+                despawnY: engine.drawHeight + 32,
+                queueX: 100,
+                maxQueueSize: 9,
+                machinery: this.machinery,
+                onServe: this.onServed.bind(this),
+                onFull: this.onFull.bind(this),
+            }),
+            new Queue({
+                id: 1,
+                spawnX: 220,
+                spawnY: engine.drawHeight + 32,
+                despawnX: 160,
+                despawnY: engine.drawHeight + 32,
+                queueX: 220,
+                maxQueueSize: 9,
+                machinery: this.machinery,
+                onServe: this.onServed.bind(this),
+                onFull: this.onFull.bind(this),
+            }),
         ];
 
         this.spawns = [
