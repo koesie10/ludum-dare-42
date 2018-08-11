@@ -8,12 +8,12 @@ const DEFAULT_QUEUE_START = 160;
 export class Queue {
     private movingToQueue: Human[] = [];
     private inQueue: Human[] = [];
-    readonly maxQueueSize: number = 10;
 
     constructor(
         readonly id: number,
         readonly spawnX: number, readonly spawnY: number,
         readonly queueX: number,
+        readonly maxQueueSize: number,
         readonly machinery: Machinery,
         readonly onServe: (Human) => void,
         readonly onFull: (Queue) => void,
@@ -147,5 +147,18 @@ export class Queue {
         });
 
         return served;
+    }
+
+    clear(): void {
+        for (let human of this.inQueue) {
+            human.scene.remove(human);
+        }
+
+        for (let human of this.movingToQueue) {
+            human.scene.remove(human);
+        }
+
+        this.inQueue = [];
+        this.movingToQueue = [];
     }
 }

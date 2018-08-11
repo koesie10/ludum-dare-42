@@ -1,5 +1,6 @@
 import * as ex from 'excalibur';
 import {Main} from 'scenes/main/main';
+import {GameOver} from 'scenes/gameover/gameover';
 import {init, Resources} from './resources';
 
 class Game extends ex.Engine {
@@ -11,8 +12,10 @@ class Game extends ex.Engine {
 
     public start() {
         const mainScene = new Main();
+        const gameOverScene = new GameOver();
 
         game.add('main', mainScene);
+        game.add('gameover', gameOverScene);
 
         const loader = new ex.Loader();
         for (let type in Resources) {

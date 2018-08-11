@@ -12,7 +12,7 @@ export class Machinery extends ex.Actor {
     pouring: boolean = false;
     contents: MachineryContents;
 
-    constructor(x: number, y: number) {
+    constructor(x: number, y: number, readonly usePerPour = 0.01) {
         super(x, y, 128, 128);
         this.scale = new ex.Vector(6, 6);
     }
@@ -42,7 +42,7 @@ export class Machinery extends ex.Actor {
             return false;
         }
 
-        if (this.contents.fillPercentage <= 0.05) {
+        if (this.contents.fillPercentage < this.usePerPour) {
             return false;
         }
 
@@ -62,7 +62,7 @@ export class Machinery extends ex.Actor {
             this.setDrawing(Animation.IDLE);
 
             this.pouring = false;
-            this.contents.fillPercentage -= 0.01;
+            this.contents.fillPercentage -= this.usePerPour;
             onDone();
         }, 100, true);
 

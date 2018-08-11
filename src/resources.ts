@@ -11,6 +11,9 @@ export const Resources = {
         HumanRed: new ex.Texture(require('./images/human_red.png')),
         HumanBlue: new ex.Texture(require('./images/human_blue.png')),
         MoneyFont: new ex.Texture(require('./images/moneyfont.png')),
+        Restart: new ex.Texture(require('./images/restart.png')),
+        Goal1: new ex.Texture(require('./images/goal1.png')),
+        Explain1: new ex.Texture(require('./images/explain1.png')),
     },
     Sounds: {
         Pour: new ex.Sound(require('./sounds/pour.wav')),

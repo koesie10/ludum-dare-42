@@ -7,23 +7,23 @@ import {Queue} from 'util/queue';
 
 import {Resources} from '@/resources';
 import {Background} from "actors/background";
+import {Stats} from '@/stats';
 
 export class Main extends ex.Scene {
     private timeUntilNextSpawn: number = 0;
-    private moneyEarned: number = 0;
 
     private queues: Queue[];
     private machinery: Machinery;
 
-    private debugLabel: ex.Label;
     private moneyLabel: ex.Label;
+    private explainText: ex.Actor;
 
     public onInitialize(engine: ex.Engine) {
-        this.machinery = new Machinery(880, 336);
+        this.machinery = new Machinery(880, 336, 0.04);
 
         this.queues = [
-            new Queue(1, -32, 688, 100, this.machinery, this.onServed.bind(this), this.onFull.bind(this)),
-            new Queue(2, 220, engine.drawHeight + 32, 220, this.machinery, this.onServed.bind(this), this.onFull.bind(this))
+            new Queue(1, -32, 688, 100, 9, this.machinery, this.onServed.bind(this), this.onFull.bind(this)),
+            new Queue(2, 220, engine.drawHeight + 32, 220, 9, this.machinery, this.onServed.bind(this), this.onFull.bind(this))
         ];
 
         this.add(new Background(0, 0, 1280, 720));
@@ -31,15 +31,19 @@ export class Main extends ex.Scene {
         this.add(this.machinery);
         this.add(new Player(160, 32));
 
-        this.debugLabel = new ex.Label('Queue: (0, 0), spawn: 0, serve: 0', 660, 30, "80px 'Press Start 2P'");
-        this.debugLabel.color = ex.Color.White;
-        this.debugLabel.fontSize = 20;
-        this.debugLabel.fontUnit = ex.FontUnit.Px;
-        this.add(this.debugLabel);
-
         this.moneyLabel = new ex.Label('$0', 1200, 64, null, Resources.Fonts.Money);
         this.moneyLabel.fontSize = 40;
         this.add(this.moneyLabel);
+
+        const goalText = new ex.Actor(760, 30, 272, 8);
+        goalText.scale.setTo(2, 2);
+        goalText.addDrawing(Resources.Textures.Goal1);
+        this.add(goalText);
+
+        this.explainText = new ex.Actor(188, 400, 152, 16);
+        this.explainText.scale.setTo(2, 2);
+        this.explainText.addDrawing(Resources.Textures.Explain1);
+        this.add(this.explainText);
     }
 
     update(engine: ex.Engine, delta: number): void {
@@ -58,22 +62,25 @@ export class Main extends ex.Scene {
             }
         }
 
-        const queueSize = this.queues.map(item => item.queueSize).reduce((a, b) => a + b);
-        const movingToQueueSize = this.queues.map(item => item.movingToQueueSize).reduce((a, b) => a + b);
-
-        this.debugLabel.text = `Queue: (${queueSize}, ${movingToQueueSize}), spawn: ${(this.timeUntilNextSpawn / 1000).toFixed(1)}s`;
-        this.moneyLabel.text = `$${this.moneyEarned.toFixed(0)}`;
+        this.moneyLabel.text = `$${Stats.moneyEarned.toFixed(0)}`;
     }
 
     private onServed(serve: Human): void {
-        this.moneyEarned += 2;
+        Stats.addMoney(2);
+        if (this.explainText !== null) {
+            this.remove(this.explainText);
+            this.explainText = null;
+        }
     }
 
     private onFull(queue: Queue): void {
         console.log('game over!');
+        this.engine.goToScene('gameover');
     }
 
     public onActivate() {
+        Stats.resetMoney();
+        this.queues.forEach(queue => queue.clear());
     }
 
     public onDeactivate() {
