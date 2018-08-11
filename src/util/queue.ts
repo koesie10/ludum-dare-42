@@ -51,9 +51,8 @@ export class Queue {
 
         const rotation = x < this.spawnX ? -Math.PI / 2 : Math.PI / 2;
 
-        human.setDrawing(HumanAnimation.WALKING);
-
         human.actions
+        .callMethod(() => human.setDrawing(HumanAnimation.WALKING))
         .rotateBy(rotation, 1)
         .moveTo(x, this.spawnY, this.movementSpeed)
         .callMethod(() => this.homeIfFull(human))
@@ -65,6 +64,8 @@ export class Queue {
 
             this.movingToQueue.splice(this.movingToQueue.indexOf(human), 1);
             this.inQueue.push(human);
+
+            human.enterQueue(this);
 
             if (this.inQueue.length === 1) {
                 human.enterFrontOfQueue(this, this.serve.bind(this));
@@ -116,6 +117,7 @@ export class Queue {
             this.inQueue.splice(this.inQueue.indexOf(served), 1);
 
             served.setDrawing(HumanAnimation.GLASS);
+            served.leaveQueue(this);
 
             const rotation = this.spawnX < served.x ? -Math.PI / 2 : Math.PI / 2;
 

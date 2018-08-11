@@ -14,8 +14,8 @@
 - If a queue is "full", it will queue onto the street instead of the sidewalk.
 - If that happens, you have a certain amount of time before the police show up and tell you to
 shut down your stand because it creates unsafe situations with people on the street.
-- A day takes a certain amount of time, after that you will sleep and the queue will start again, only this
-time faster because you are more popular.
+- Each level has a goal and a predetermined set of spawns, such that the
+difficulty will always be the same for each player.
 
 Wish list:
 - Mix the drinks (i.e. sugar, lemonade, water)
