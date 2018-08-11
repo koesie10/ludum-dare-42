@@ -18,7 +18,7 @@ export class Machinery extends ex.Actor {
     public onInitialize(engine: ex.Engine) {
         const sheet = new ex.SpriteSheet(Resources.Textures.Machinery, 13, 1, 128, 128);
 
-        this.pourAnimation = sheet.getAnimationBetween(engine, 1, 13, 200);
+        this.pourAnimation = sheet.getAnimationBetween(engine, 1, 13, 280);
         this.pourAnimation.loop = false;
 
         this.addDrawing(Animation.IDLE, sheet.getAnimationBetween(engine, 0, 1, 200));
@@ -41,6 +41,8 @@ export class Machinery extends ex.Actor {
 
         this.pourAnimation.reset();
         this.setDrawing(Animation.POUR);
+
+        Resources.Sounds.Pour.play();
 
         const timer = new ex.Timer(() => {
             if (!this.pourAnimation.isDone()) {

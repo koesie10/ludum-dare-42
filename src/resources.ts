@@ -12,6 +12,6 @@ export const Resources = {
         HumanBlue: new ex.Texture(require('./images/human_blue.png')),
     },
     Sounds: {
-
+        Pour: new ex.Sound(require('./sounds/pour.wav'))
     }
 };
