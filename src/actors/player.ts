@@ -1,5 +1,5 @@
 import * as ex from 'excalibur';
-import {Resources} from '../resources';
+import {Resources} from '@/resources';
 
 export class Player extends ex.Actor {
     constructor(x: number, y: number) {

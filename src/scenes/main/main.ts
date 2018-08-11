@@ -1,8 +1,8 @@
 import * as ex from 'excalibur';
-import {Stand} from '../../actors/stand/stand';
-import {Player} from '../../actors/player';
-import {Animation as HumanAnimation, Human} from '../../actors/human';
-import {Machinery, Animation as MachineryAnimation} from "../../actors/stand/back";
+import {Stand} from 'actors/stand/stand';
+import {Player} from 'actors/player';
+import {Animation as HumanAnimation, Human} from 'actors/human';
+import {Machinery, Animation as MachineryAnimation} from 'actors/stand/machinery';
 
 const MOVEMENT_SPEED = 256;
 

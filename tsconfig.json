@@ -3,6 +3,12 @@
     "target": "es5",
     "module": "commonjs",
     "sourceMap": true,
-    "outDir": "./dist/"
+    "outDir": "./dist/",
+    "baseUrl": "src",
+    "paths": {
+      "actors/*": ["actors/*"],
+      "scenes/*": ["scenes/*"],
+      "@/*": ["*"]
+    }
   }
 }

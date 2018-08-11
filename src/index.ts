@@ -1,5 +1,5 @@
 import * as ex from 'excalibur';
-import {Main} from './scenes/main/main';
+import {Main} from 'scenes/main/main';
 import {Resources} from './resources';
 
 class Game extends ex.Engine {
