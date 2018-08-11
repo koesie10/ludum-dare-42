@@ -30,7 +30,7 @@ export class BaseLevel extends ex.Scene {
         this.add(new Stand(160, 96));
         this.add(new Player(160, 32));
 
-        this.moneyLabel = new ex.Label('$0', 1200, 64, null, Resources.Fonts.Money);
+        this.moneyLabel = new ex.Label('$0', 1140, 64, null, Resources.Fonts.Money);
         this.moneyLabel.fontSize = 40;
         this.add(this.moneyLabel);
     }
