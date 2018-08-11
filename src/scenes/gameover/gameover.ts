@@ -25,4 +25,9 @@ export class GameOver extends ex.Scene {
             this.engine.goToScene('level1');
         }
     }
+
+    public onActivate(): void {
+        Resources.Sounds.Pour.stop();
+        Resources.Sounds.GameOver.play();
+    }
 }

@@ -72,6 +72,8 @@ export class BaseLevel extends ex.Scene {
     public onActivate() {
         Stats.resetMoney();
         this.queues.forEach(queue => queue.clear());
+        this.currentSpawn = 0;
+        this.timeUntilNextSpawn = 0;
     }
 
     public onDeactivate() {
