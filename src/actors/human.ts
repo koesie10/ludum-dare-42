@@ -5,8 +5,9 @@ import {Queue} from 'util/queue';
 
 export enum Animation {
     IDLE = 0,
-    SELECTED = 1,
-    GLASS = 2
+    WALKING = 1,
+    SELECTED = 2,
+    GLASS = 3
 }
 
 export class Human extends ex.Actor {
@@ -20,13 +21,14 @@ export class Human extends ex.Actor {
     }
 
     public onInitialize(engine: ex.Engine) {
-        const playerSheet = new ex.SpriteSheet(Resources.Textures.HumanBlue, 3, 1, 7, 7);
+        const playerSheet = new ex.SpriteSheet(Resources.Textures.HumanBlue, 6, 1, 7, 7);
 
         this.addDrawing(Animation.IDLE, playerSheet.getAnimationBetween(engine, 0, 1, 200));
-        this.addDrawing(Animation.SELECTED, playerSheet.getAnimationBetween(engine, 1, 2, 200));
-        this.addDrawing(Animation.GLASS, playerSheet.getAnimationBetween(engine, 2, 3, 200));
+        this.addDrawing(Animation.WALKING, playerSheet.getAnimationBetween(engine, 0, 4, 250));
+        this.addDrawing(Animation.SELECTED, playerSheet.getAnimationBetween(engine, 4, 5, 200));
+        this.addDrawing(Animation.GLASS, playerSheet.getAnimationBetween(engine, 5, 6, 200));
 
-        this.setDrawing(Animation.IDLE);
+        this.setDrawing(Animation.WALKING);
     }
 
     public enterFrontOfQueue(queue: Queue, serve: () => void = null) {

@@ -51,6 +51,8 @@ export class Queue {
 
         const rotation = x < this.spawnX ? -Math.PI / 2 : Math.PI / 2;
 
+        human.setDrawing(HumanAnimation.WALKING);
+
         human.actions
         .rotateBy(rotation, 1)
         .moveTo(x, this.spawnY, this.movementSpeed)
@@ -59,6 +61,8 @@ export class Queue {
         .moveTo(x, y, this.movementSpeed)
         .callMethod(() => this.homeIfFull(human))
         .callMethod(() => {
+            human.setDrawing(HumanAnimation.IDLE);
+
             this.movingToQueue.splice(this.movingToQueue.indexOf(human), 1);
             this.inQueue.push(human);
 
@@ -86,13 +90,16 @@ export class Queue {
         human.actions
         .clearActions();
 
+        human.setDrawing(HumanAnimation.WALKING);
+
         const rotation = human.x > this.spawnX ? -Math.PI / 2 : Math.PI / 2;
 
         human.actions
         .rotateBy(Math.PI, 1)
         .moveTo(human.x, this.spawnY, this.movementSpeed)
         .rotateBy(rotation, 1)
-        .moveTo(this.spawnX, this.spawnY, this.movementSpeed);
+        .moveTo(this.spawnX, this.spawnY, this.movementSpeed)
+        .callMethod(() => human.setDrawing(HumanAnimation.IDLE));
 
         this.movingToQueue.splice(this.movingToQueue.indexOf(human), 1);
     }
@@ -121,10 +128,13 @@ export class Queue {
             for (let human of this.inQueue) {
                 human.queueSpotY = i * this.space + this.start;
 
+                human.setDrawing(HumanAnimation.WALKING);
+
                 human.actions
                 .rotateTo(0, 1)
                 .delay(200)
-                .moveTo(human.queueSpotX, human.queueSpotY, this.movementSpeed);
+                .moveTo(human.queueSpotX, human.queueSpotY, this.movementSpeed)
+                .callMethod(() => human.setDrawing(HumanAnimation.IDLE));
 
                 if (i === 0) {
                     human.actions.callMethod(() => human.enterFrontOfQueue(this, this.serve.bind(this)));
@@ -136,9 +146,12 @@ export class Queue {
             for (let human of this.movingToQueue) {
                 human.queueSpotY = i * this.space + this.start;
 
+                human.setDrawing(HumanAnimation.WALKING);
+
                 human.actions
                 .rotateTo(0, 1)
-                .moveTo(human.queueSpotX, human.queueSpotY, this.movementSpeed);
+                .moveTo(human.queueSpotX, human.queueSpotY, this.movementSpeed)
+                .callMethod(() => human.setDrawing(HumanAnimation.IDLE));
 
                 i++;
             }
