@@ -11,7 +11,7 @@ export class Stand extends ex.Actor {
     }
 
     public onInitialize(engine: ex.Engine) {
-        this.add(new Can(9, -2.5));
+        this.add(new Can(8.5, -1.5));
         this.add(new Decoration(0, 0));
     }
 }
