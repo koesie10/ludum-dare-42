@@ -22,7 +22,7 @@ export class GameOver extends ex.Scene {
 
     update(engine: ex.Engine, delta: number): void {
         if (engine.input.keyboard.isHeld(ex.Input.Keys.Space)) {
-            this.engine.goToScene('main');
+            this.engine.goToScene('level1');
         }
     }
 }

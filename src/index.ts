@@ -1,5 +1,5 @@
 import * as ex from 'excalibur';
-import {Main} from 'scenes/main/main';
+import {Level1} from 'scenes/level1/level1';
 import {GameOver} from 'scenes/gameover/gameover';
 import {init, Resources} from './resources';
 
@@ -11,10 +11,10 @@ class Game extends ex.Engine {
     }
 
     public start() {
-        const mainScene = new Main();
+        const level1 = new Level1();
         const gameOverScene = new GameOver();
 
-        game.add('main', mainScene);
+        game.add('level1', level1);
         game.add('gameover', gameOverScene);
 
         const loader = new ex.Loader();
@@ -31,7 +31,7 @@ class Game extends ex.Engine {
         return super.start(loader).then(() => {
             init(this);
 
-            game.goToScene('main');
+            game.goToScene('level1');
         });
     }
 }
