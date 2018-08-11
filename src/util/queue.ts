@@ -8,7 +8,7 @@ const DEFAULT_QUEUE_START = 160;
 export class Queue {
     private movingToQueue: Human[] = [];
     private inQueue: Human[] = [];
-    readonly maxQueueSize: number = 11;
+    readonly maxQueueSize: number = 10;
 
     constructor(
         readonly id: number,
@@ -16,6 +16,7 @@ export class Queue {
         readonly queueX: number,
         readonly machinery: Machinery,
         readonly onServe: (Human) => void,
+        readonly onFull: (Queue) => void,
         readonly movementSpeed: number = DEFAULT_MOVEMENT_SPEED,
         readonly space: number = DEFAULT_QUEUE_SPACE,
         readonly start: number = DEFAULT_QUEUE_START
@@ -67,6 +68,7 @@ export class Queue {
 
             if (this.isFull) {
                 // TODO: Game over?
+                this.onFull(this);
             }
         });
 

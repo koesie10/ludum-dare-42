@@ -42,7 +42,7 @@ export class Machinery extends ex.Actor {
             return false;
         }
 
-        if (this.contents.fillPercentage <= 0.04) {
+        if (this.contents.fillPercentage <= 0.05) {
             return false;
         }
 
@@ -62,7 +62,7 @@ export class Machinery extends ex.Actor {
             this.setDrawing(Animation.IDLE);
 
             this.pouring = false;
-            this.contents.fillPercentage -= 0.05;
+            this.contents.fillPercentage -= 0.01;
             onDone();
         }, 100, true);
 

@@ -10,10 +10,10 @@ export const Resources = {
         Machinery: new ex.Texture(require('./images/machinery.png')),
         HumanRed: new ex.Texture(require('./images/human_red.png')),
         HumanBlue: new ex.Texture(require('./images/human_blue.png')),
-        MoneyFont: new ex.Texture(require('./images/moneyfont.png'))
+        MoneyFont: new ex.Texture(require('./images/moneyfont.png')),
     },
     Sounds: {
-        Pour: new ex.Sound(require('./sounds/pour.wav'))
+        Pour: new ex.Sound(require('./sounds/pour.wav')),
     },
     Fonts: {
         Money: <ex.SpriteFont> null

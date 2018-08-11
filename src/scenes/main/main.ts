@@ -6,6 +6,7 @@ import {Machinery} from 'actors/stand/machinery';
 import {Queue} from 'util/queue';
 
 import {Resources} from '@/resources';
+import {Background} from "actors/background";
 
 export class Main extends ex.Scene {
     private timeUntilNextSpawn: number = 0;
@@ -21,10 +22,11 @@ export class Main extends ex.Scene {
         this.machinery = new Machinery(880, 336);
 
         this.queues = [
-            new Queue(1, -32, engine.drawHeight - 20, 100, this.machinery, this.onServed.bind(this)),
-            new Queue(2, engine.drawWidth + 32, engine.drawHeight - 20, 220, this.machinery, this.onServed.bind(this))
+            new Queue(1, -32, 688, 100, this.machinery, this.onServed.bind(this), this.onFull.bind(this)),
+            new Queue(2, 220, engine.drawHeight + 32, 220, this.machinery, this.onServed.bind(this), this.onFull.bind(this))
         ];
 
+        this.add(new Background(0, 0, 1280, 720));
         this.add(new Stand(160, 96));
         this.add(this.machinery);
         this.add(new Player(160, 32));
@@ -63,8 +65,12 @@ export class Main extends ex.Scene {
         this.moneyLabel.text = `$${this.moneyEarned.toFixed(0)}`;
     }
 
-    private onServed(serve: Human) {
+    private onServed(serve: Human): void {
         this.moneyEarned += 2;
+    }
+
+    private onFull(queue: Queue): void {
+        console.log('game over!');
     }
 
     public onActivate() {

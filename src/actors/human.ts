@@ -30,24 +30,19 @@ export class Human extends ex.Actor {
     }
 
     public enterFrontOfQueue(queue: Queue, serve: () => void = null) {
-        console.log(`${this.id} is at front of ${queue.id}!`);
-
         this.enableCapturePointer = true;
 
         this.on('pointerdown', evt => {
-            console.log('down');
             if (serve) {
                 serve();
             }
         });
 
         this.on('pointerenter', evt => {
-            console.log("enter");
             this.setDrawing(Animation.SELECTED);
         });
 
         this.on('pointerleave', evt => {
-            console.log("exit");
             this.setDrawing(Animation.IDLE);
         });
     }
