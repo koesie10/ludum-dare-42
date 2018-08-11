@@ -74,11 +74,6 @@ export class Level1 extends BaseLevel {
         goalText.scale.setTo(2, 2);
         goalText.addDrawing(Resources.Textures.Goal1);
         this.add(goalText);
-
-        this.explainText = new ex.Actor(188, 400, 152, 16);
-        this.explainText.scale.setTo(2, 2);
-        this.explainText.addDrawing(Resources.Textures.Explain1);
-        this.add(this.explainText);
     }
 
     protected onServed(serve: Human): void {
@@ -87,5 +82,13 @@ export class Level1 extends BaseLevel {
         if (Stats.moneyEarned >= 40) {
             this.engine.goToScene('level2');
         }
+    }
+
+    public onActivate(): void {
+        super.onActivate();
+        this.explainText = new ex.Actor(188, 400, 152, 16);
+        this.explainText.scale.setTo(2, 2);
+        this.explainText.addDrawing(Resources.Textures.Explain1);
+        this.add(this.explainText);
     }
 }
