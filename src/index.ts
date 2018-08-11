@@ -4,7 +4,9 @@ import {Resources} from './resources';
 
 class Game extends ex.Engine {
     constructor() {
-        super({width: 800, height: 600, displayMode: ex.DisplayMode.FullScreen});
+        super({width: 1280, height: 720, displayMode: ex.DisplayMode.FullScreen});
+        this.setAntialiasing(false);
+        this.backgroundColor = ex.Color.Black;
     }
 
     public start() {
