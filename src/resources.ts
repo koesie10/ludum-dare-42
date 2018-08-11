@@ -16,7 +16,7 @@ export const Resources = {
         Explain1: new ex.Texture(require('./images/explain1.png')),
     },
     Sounds: {
-        Pour: new ex.Sound(require('./sounds/pour.wav')),
+        Pour: new ex.Sound(require('./sounds/pour.ogg')),
     },
     Fonts: {
         Money: <ex.SpriteFont> null
