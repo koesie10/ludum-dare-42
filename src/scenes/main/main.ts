@@ -5,13 +5,17 @@ import {Human} from 'actors/human';
 import {Machinery} from 'actors/stand/machinery';
 import {Queue} from 'util/queue';
 
+import {Resources} from '@/resources';
+
 export class Main extends ex.Scene {
     private timeUntilNextSpawn: number = 0;
+    private moneyEarned: number = 0;
 
     private queues: Queue[];
     private machinery: Machinery;
 
     private debugLabel: ex.Label;
+    private moneyLabel: ex.Label;
 
     public onInitialize(engine: ex.Engine) {
         this.machinery = new Machinery(880, 336);
@@ -25,10 +29,15 @@ export class Main extends ex.Scene {
         this.add(this.machinery);
         this.add(new Player(160, 32));
 
-        this.debugLabel = new ex.Label('Queue: (0, 0), spawn: 0, serve: 0', 660, 30);
+        this.debugLabel = new ex.Label('Queue: (0, 0), spawn: 0, serve: 0', 660, 30, "80px 'Press Start 2P'");
         this.debugLabel.color = ex.Color.White;
-        this.debugLabel.fontSize = 22;
+        this.debugLabel.fontSize = 20;
+        this.debugLabel.fontUnit = ex.FontUnit.Px;
         this.add(this.debugLabel);
+
+        this.moneyLabel = new ex.Label('$0', 1200, 64, null, Resources.Fonts.Money);
+        this.moneyLabel.fontSize = 40;
+        this.add(this.moneyLabel);
     }
 
     update(engine: ex.Engine, delta: number): void {
@@ -51,10 +60,11 @@ export class Main extends ex.Scene {
         const movingToQueueSize = this.queues.map(item => item.movingToQueueSize).reduce((a, b) => a + b);
 
         this.debugLabel.text = `Queue: (${queueSize}, ${movingToQueueSize}), spawn: ${(this.timeUntilNextSpawn / 1000).toFixed(1)}s`;
+        this.moneyLabel.text = `$${this.moneyEarned.toFixed(0)}`;
     }
 
     private onServed(serve: Human) {
-
+        this.moneyEarned += 2;
     }
 
     public onActivate() {

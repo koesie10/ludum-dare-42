@@ -1,5 +1,6 @@
 import * as ex from 'excalibur';
 import {Resources} from '@/resources';
+import {MachineryContents} from './machinery_contents';
 
 export enum Animation {
     IDLE = 0,
@@ -9,6 +10,7 @@ export enum Animation {
 export class Machinery extends ex.Actor {
     pourAnimation: ex.Animation;
     pouring: boolean = false;
+    contents: MachineryContents;
 
     constructor(x: number, y: number) {
         super(x, y, 128, 128);
@@ -25,6 +27,9 @@ export class Machinery extends ex.Actor {
         this.addDrawing(Animation.POUR, this.pourAnimation);
 
         this.setDrawing(Animation.IDLE);
+
+        this.contents = new MachineryContents(0, 0);
+        this.add(this.contents);
     }
 
     /**
@@ -34,6 +39,10 @@ export class Machinery extends ex.Actor {
      */
     public startPouring(onDone: () => void): boolean {
         if (this.pouring) {
+            return false;
+        }
+
+        if (this.contents.fillPercentage <= 0.04) {
             return false;
         }
 
@@ -53,6 +62,7 @@ export class Machinery extends ex.Actor {
             this.setDrawing(Animation.IDLE);
 
             this.pouring = false;
+            this.contents.fillPercentage -= 0.05;
             onDone();
         }, 100, true);
 

@@ -59,7 +59,8 @@ module.exports = ({mode, presets} = {mode: "production", presets: []}) => {
             plugins: [
                 new CleanWebpackPlugin(['dist']),
                 new HtmlWebPackPlugin({
-                    title: 'Ludum Dare 42'
+                    title: 'Ludum Dare 42',
+                    template: 'index.html'
                 })
             ]
         },

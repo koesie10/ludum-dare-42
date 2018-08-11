@@ -1,6 +1,6 @@
 import * as ex from 'excalibur';
 import {Main} from 'scenes/main/main';
-import {Resources} from './resources';
+import {init, Resources} from './resources';
 
 class Game extends ex.Engine {
     constructor() {
@@ -17,11 +17,17 @@ class Game extends ex.Engine {
         const loader = new ex.Loader();
         for (let type in Resources) {
             for (let key in Resources[type]) {
-                loader.addResource(Resources[type][key]);
+                let resource = Resources[type][key];
+                if (resource === null) {
+                    continue;
+                }
+                loader.addResource(resource);
             }
         }
 
         return super.start(loader).then(() => {
+            init(this);
+
             game.goToScene('main');
         });
     }
