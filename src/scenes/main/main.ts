@@ -2,25 +2,30 @@ import * as ex from 'excalibur';
 import {Stand} from '../../actors/stand/stand';
 import {Player} from '../../actors/player';
 import {Animation as HumanAnimation, Human} from '../../actors/human';
+import {Machinery, Animation as MachineryAnimation} from "../../actors/stand/back";
 
 const MOVEMENT_SPEED = 256;
 
 export class Main extends ex.Scene {
     private timeUntilNextSpawn: number = 0;
-    private timeUntilNextQueueMove: number = 0;
+    private timeUntilNextServe: number = 0;
 
     private readonly queues: Queue[] = [
-        new Queue(-32, 700, 580),
-        new Queue(1312, 700, 700)
+        new Queue(-32, 700, 100),
+        new Queue(1312, 700, 220)
     ];
+    private machinery: Machinery;
 
     private debugLabel: ex.Label;
 
     public onInitialize(engine: ex.Engine) {
-        this.add(new Stand(640, 96));
-        this.add(new Player(640, 32));
+        this.machinery = new Machinery(880, 336);
 
-        this.debugLabel = new ex.Label('Queue: (0, 0), spawn: 0, move: 0', 40, 80);
+        this.add(new Stand(160, 96));
+        this.add(this.machinery);
+        this.add(new Player(160, 32));
+
+        this.debugLabel = new ex.Label('Queue: (0, 0), spawn: 0, serve: 0', 660, 30);
         this.debugLabel.color = ex.Color.White;
         this.debugLabel.fontSize = 22;
         this.add(this.debugLabel);
@@ -30,7 +35,7 @@ export class Main extends ex.Scene {
         super.update(engine, delta);
 
         this.timeUntilNextSpawn -= delta;
-        this.timeUntilNextQueueMove -= delta;
+        this.timeUntilNextServe -= delta;
 
         if (this.timeUntilNextSpawn <= 0) {
             this.timeUntilNextSpawn = ex.Util.randomIntInRange(500, 5000);
@@ -43,28 +48,17 @@ export class Main extends ex.Scene {
             }
         }
 
-        if (this.timeUntilNextQueueMove <= 0) {
-            this.timeUntilNextQueueMove = ex.Util.randomIntInRange(2000, 9000);
+        if (this.timeUntilNextServe <= 0) {
+            this.timeUntilNextServe = ex.Util.randomIntInRange(2000, 9000);
 
             const queue = this.queues[ex.Util.randomIntInRange(0, this.queues.length - 1)];
-            const served = queue.moveForward();
-
-            if (served !== null) {
-                served.setDrawing(HumanAnimation.GLASS);
-
-                const rotation = queue.spawnX < served.x ? -Math.PI / 2 : Math.PI / 2;
-
-                served.actions
-                .rotateBy(rotation, 1)
-                .moveTo(queue.spawnX, served.y, MOVEMENT_SPEED)
-                .callMethod(() => this.remove(served));
-            }
+            const served = queue.serve(this.machinery);
         }
 
         const queueSize = this.queues.map(item => item.queueSize).reduce((a, b) => a + b);
         const movingToQueueSize = this.queues.map(item => item.movingToQueueSize).reduce((a, b) => a + b);
 
-        this.debugLabel.text = `Queue: (${queueSize}, ${movingToQueueSize}), spawn: ${(this.timeUntilNextSpawn/1000).toFixed(1)}, move: ${(this.timeUntilNextQueueMove/1000).toFixed(1)}`;
+        this.debugLabel.text = `Queue: (${queueSize}, ${movingToQueueSize}), spawn: ${(this.timeUntilNextSpawn/1000).toFixed(1)}s, serve: ${(this.timeUntilNextServe/1000).toFixed(1)}s`;
     }
 
     public onActivate() {
@@ -155,35 +149,58 @@ class Queue {
         this.movingToQueue.splice(this.movingToQueue.indexOf(human), 1);
     }
 
-    moveForward(): Human {
+    serve(machinery: Machinery): Human {
         if (this.inQueue.length < 1) {
             return null;
         }
 
-        const removed = this.inQueue.splice(0, 1);
+        const served = this.inQueue.splice(0, 1)[0];
 
-        let i = 0;
-        for (let human of this.inQueue) {
-            human.queueSpotY = i * QUEUE_SPACE + QUEUE_START;
+        machinery.pourAnimation.reset();
+        machinery.setDrawing(MachineryAnimation.POUR);
 
-            human.actions
-            .rotateTo(0, 1)
-            .delay(200)
-            .moveTo(human.queueSpotX, human.queueSpotY, MOVEMENT_SPEED);
+        const timer = new ex.Timer(() => {
+            if (!machinery.pourAnimation.isDone()) {
+                return;
+            }
+            timer.cancel();
 
-            i++;
-        }
+            machinery.setDrawing(MachineryAnimation.IDLE);
 
-        for (let human of this.movingToQueue) {
-            human.queueSpotY = i * QUEUE_SPACE + QUEUE_START;
+            served.setDrawing(HumanAnimation.GLASS);
 
-            human.actions
-            .rotateTo(0, 1)
-            .moveTo(human.queueSpotX, human.queueSpotY, MOVEMENT_SPEED);
+            const rotation = this.spawnX < served.x ? -Math.PI / 2 : Math.PI / 2;
 
-            i++;
-        }
+            served.actions
+            .rotateBy(rotation, 1)
+            .moveTo(this.spawnX, served.y, MOVEMENT_SPEED)
+            .callMethod(() => served.scene.remove(served));
 
-        return removed[0];
+            let i = 0;
+            for (let human of this.inQueue) {
+                human.queueSpotY = i * QUEUE_SPACE + QUEUE_START;
+
+                human.actions
+                .rotateTo(0, 1)
+                .delay(200)
+                .moveTo(human.queueSpotX, human.queueSpotY, MOVEMENT_SPEED);
+
+                i++;
+            }
+
+            for (let human of this.movingToQueue) {
+                human.queueSpotY = i * QUEUE_SPACE + QUEUE_START;
+
+                human.actions
+                .rotateTo(0, 1)
+                .moveTo(human.queueSpotX, human.queueSpotY, MOVEMENT_SPEED);
+
+                i++;
+            }
+        }, 100, true);
+
+        machinery.scene.addTimer(timer);
+
+        return served;
     }
 }
