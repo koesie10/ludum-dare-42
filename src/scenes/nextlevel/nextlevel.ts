@@ -29,5 +29,6 @@ export class NextLevel extends ex.Scene {
     public onActivate(): void {
         this.timeInScene = 0;
         Resources.Sounds.Pour.stop();
+        Resources.Sounds.GoalReached.play();
     }
 }

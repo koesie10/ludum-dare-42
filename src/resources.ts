@@ -22,6 +22,7 @@ export const Resources = {
     Sounds: {
         Click: new ex.Sound(require('./sounds/click.ogg')),
         GameOver: new ex.Sound(require('./sounds/gameover.ogg')),
+        GoalReached: new ex.Sound(require('./sounds/goalreached.ogg')),
         Pour: new ex.Sound(require('./sounds/pour.ogg')),
     },
     Fonts: {

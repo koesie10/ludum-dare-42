@@ -76,6 +76,15 @@ export class Level1 extends BaseLevel {
         this.add(goalText);
     }
 
+    update(engine: ex.Engine, delta: number): void {
+        super.update(engine, delta);
+
+        if (engine.input.keyboard.wasPressed(ex.Input.Keys.Num2)) {
+            Stats.nextLevel = 'level2';
+            this.engine.goToScene('nextlevel');
+        }
+    }
+
     protected onServed(queue: Queue, serve: Human): void {
         super.onServed(queue, serve);
 
