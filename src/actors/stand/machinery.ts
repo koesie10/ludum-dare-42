@@ -32,6 +32,10 @@ export class Machinery extends ex.Actor {
         this.add(this.contents);
     }
 
+    public reset() {
+        this.contents.reset();
+    }
+
     /**
      * @param onDone
      *

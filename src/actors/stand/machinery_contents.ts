@@ -1,5 +1,4 @@
 import * as ex from 'excalibur';
-import {Resources} from '@/resources';
 
 export class MachineryContents extends ex.Actor {
     fillPercentage: number = 1;
@@ -9,10 +8,9 @@ export class MachineryContents extends ex.Actor {
         this.scale = new ex.Vector(6, 6);
     }
 
-    public onInitialize(engine: ex.Engine) {
-
+    public reset() {
+        this.fillPercentage = 1;
     }
-
 
     draw(ctx: CanvasRenderingContext2D, delta: number): void {
         const height = Math.round(this.fillPercentage * 66);
