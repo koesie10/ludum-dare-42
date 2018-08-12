@@ -148,7 +148,7 @@ export class Queue {
 
             human.actions
             .rotateTo(0, 1)
-            .delay(200)
+            .delay(200 * i)
             .moveTo(human.queueSpotX, human.queueSpotY, this.options.movementSpeed)
             .callMethod(() => human.setDrawing(HumanAnimation.IDLE));
 
