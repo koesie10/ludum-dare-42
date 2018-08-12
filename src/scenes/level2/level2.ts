@@ -7,10 +7,10 @@ import {BaseLevel} from 'scenes/level';
 import {Human} from 'actors/human';
 import {Stats} from '@/stats';
 
-export class Level1 extends BaseLevel {
+export class Level2 extends BaseLevel {
     public onInitialize(engine: ex.Engine) {
         super.onInitialize(engine);
-        this.machinery = new Machinery(880, 336, 0.04);
+        this.machinery = new Machinery(880, 336, 0.01);
 
         this.queues = [
             new Queue({
@@ -21,6 +21,7 @@ export class Level1 extends BaseLevel {
                 despawnY: engine.drawHeight + 32,
                 queueX: 100,
                 maxQueueSize: 9,
+                patienceEnabled: true,
                 machinery: this.machinery,
                 onServe: this.onServed.bind(this),
                 onFull: this.onFull.bind(this),
@@ -33,6 +34,7 @@ export class Level1 extends BaseLevel {
                 despawnY: engine.drawHeight + 32,
                 queueX: 220,
                 maxQueueSize: 9,
+                patienceEnabled: true,
                 machinery: this.machinery,
                 onServe: this.onServed.bind(this),
                 onFull: this.onFull.bind(this),
@@ -40,18 +42,18 @@ export class Level1 extends BaseLevel {
         ];
 
         this.spawns = [
-            {queueId: 0, timeUntilNextSpawn: 5000},
+            {queueId: 0, timeUntilNextSpawn: 1000},
             {queueId: 0, timeUntilNextSpawn: 500},
             {queueId: 1, timeUntilNextSpawn: 2000},
-            {queueId: 0, timeUntilNextSpawn: 3000},
+            {queueId: 0, timeUntilNextSpawn: 2000},
             {queueId: 1, timeUntilNextSpawn: 3000},
             {queueId: 0, timeUntilNextSpawn: 2000},
             {queueId: 0, timeUntilNextSpawn: 1000},
-            {queueId: 0, timeUntilNextSpawn: 500},
+            {queueId: 1, timeUntilNextSpawn: 500},
             {queueId: 1, timeUntilNextSpawn: 1000},
             {queueId: 0, timeUntilNextSpawn: 2000},
             {queueId: 0, timeUntilNextSpawn: 1000},
-            {queueId: 0, timeUntilNextSpawn: 5000},
+            {queueId: 1, timeUntilNextSpawn: 3000},
             {queueId: 1, timeUntilNextSpawn: 2000},
             {queueId: 1, timeUntilNextSpawn: 1000},
             {queueId: 1, timeUntilNextSpawn: 1000},
@@ -66,23 +68,36 @@ export class Level1 extends BaseLevel {
             {queueId: 1, timeUntilNextSpawn: 4000},
             {queueId: 1, timeUntilNextSpawn: 5000},
             {queueId: 0, timeUntilNextSpawn: 4000},
+            {queueId: 1, timeUntilNextSpawn: 5000},
+            {queueId: 0, timeUntilNextSpawn: 3000},
+            {queueId: 0, timeUntilNextSpawn: 4000},
+            {queueId: 1, timeUntilNextSpawn: 5000},
+            {queueId: 1, timeUntilNextSpawn: 6000},
+            {queueId: 0, timeUntilNextSpawn: 500},
+            {queueId: 0, timeUntilNextSpawn: 8000},
+            {queueId: 1, timeUntilNextSpawn: 4000},
+            {queueId: 0, timeUntilNextSpawn: 10000},
+            {queueId: 1, timeUntilNextSpawn: 8000},
+            {queueId: 0, timeUntilNextSpawn: 6000},
+            {queueId: 1, timeUntilNextSpawn: 12000},
+            {queueId: 1, timeUntilNextSpawn: 9000},
         ];
 
         this.add(this.machinery);
 
         const goalText = new ex.Actor(760, 30, 272, 8);
         goalText.scale.setTo(2, 2);
-        goalText.addDrawing(Resources.Textures.Goal1);
+        goalText.addDrawing(Resources.Textures.Goal2);
         this.add(goalText);
     }
 
     protected onServed(queue: Queue, serve: Human): void {
         super.onServed(queue, serve);
 
-        Stats.addMoney(2);
+        Stats.addMoney(serve.outOfPatience ? 1 : 2);
 
-        if (Stats.moneyEarned >= 2) {
-            this.engine.goToScene('level2');
+        if (Stats.moneyEarned >= 60) {
+            this.engine.goToScene('level3');
         }
     }
 
@@ -90,7 +105,7 @@ export class Level1 extends BaseLevel {
         super.onActivate();
         this.explainText = new ex.Actor(188, 400, 152, 16);
         this.explainText.scale.setTo(2, 2);
-        this.explainText.addDrawing(Resources.Textures.Explain1);
+        this.explainText.addDrawing(Resources.Textures.Explain2);
         this.add(this.explainText);
     }
 }

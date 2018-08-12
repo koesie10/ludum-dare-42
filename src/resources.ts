@@ -13,7 +13,9 @@ export const Resources = {
         MoneyFont: new ex.Texture(require('./images/moneyfont.png')),
         Restart: new ex.Texture(require('./images/restart.png')),
         Goal1: new ex.Texture(require('./images/goal1.png')),
+        Goal2: new ex.Texture(require('./images/goal2.png')),
         Explain1: new ex.Texture(require('./images/explain1.png')),
+        Explain2: new ex.Texture(require('./images/explain2.png')),
     },
     Sounds: {
         Click: new ex.Sound(require('./sounds/click.ogg')),

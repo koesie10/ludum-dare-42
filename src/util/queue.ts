@@ -18,6 +18,9 @@ export interface QueueOptions {
 
     maxQueueSize: number;
     machinery: Machinery;
+
+    patienceEnabled?: boolean;
+
     onServe: (Queue, Human) => void;
     onFull: (Queue) => void;
     movementSpeed?: number;
@@ -30,6 +33,7 @@ export class Queue {
     private inQueue: Human[] = [];
 
     constructor(readonly options: QueueOptions) {
+        this.options.patienceEnabled = this.options.patienceEnabled || false;
         this.options.movementSpeed = this.options.movementSpeed || DEFAULT_MOVEMENT_SPEED;
         this.options.space = this.options.space || DEFAULT_QUEUE_SPACE;
         this.options.start = this.options.start || DEFAULT_QUEUE_START;
@@ -123,58 +127,66 @@ export class Queue {
         }
 
         const served = this.inQueue[0];
+        served.startServing(this);
 
         this.options.machinery.startPouring(() => {
-            this.inQueue.splice(this.inQueue.indexOf(served), 1);
-
-            served.setDrawing(HumanAnimation.GLASS);
-            served.leaveQueue(this);
-
-            const rotation = this.options.despawnX < served.x ? -Math.PI / 2 : Math.PI / 2;
-
-            served.actions
-            .rotateBy(rotation, 1)
-            .moveTo(this.options.despawnX, served.y, this.options.movementSpeed)
-            .rotateBy(Math.PI, 1)
-            .moveTo(this.options.despawnX, this.options.despawnY, this.options.movementSpeed)
-            .callMethod(() => served.scene.remove(served));
-
-            let i = 0;
-            for (let human of this.inQueue) {
-                human.queueSpotY = i * this.options.space + this.options.start;
-
-                human.setDrawing(HumanAnimation.WALKING);
-
-                human.actions
-                .rotateTo(0, 1)
-                .delay(200)
-                .moveTo(human.queueSpotX, human.queueSpotY, this.options.movementSpeed)
-                .callMethod(() => human.setDrawing(HumanAnimation.IDLE));
-
-                if (i === 0) {
-                    human.actions.callMethod(() => human.enterFrontOfQueue(this, this.serve.bind(this)));
-                }
-
-                i++;
-            }
-
-            for (let human of this.movingToQueue) {
-                human.queueSpotY = i * this.options.space + this.options.start;
-
-                human.setDrawing(HumanAnimation.WALKING);
-
-                human.actions
-                .rotateTo(0, 1)
-                .moveTo(human.queueSpotX, human.queueSpotY, this.options.movementSpeed)
-                .callMethod(() => human.setDrawing(HumanAnimation.IDLE));
-
-                i++;
-            }
+            this.moveOutOfQueue(served);
+            this.moveToCorrectPlaces();
 
             this.options.onServe(this, served);
         });
 
         return served;
+    }
+
+    private moveToCorrectPlaces(): void {
+        let i = 0;
+        for (let human of this.inQueue) {
+            human.queueSpotY = i * this.options.space + this.options.start;
+
+            human.setDrawing(HumanAnimation.WALKING);
+
+            human.actions
+            .rotateTo(0, 1)
+            .delay(200)
+            .moveTo(human.queueSpotX, human.queueSpotY, this.options.movementSpeed)
+            .callMethod(() => human.setDrawing(HumanAnimation.IDLE));
+
+            if (i === 0) {
+                human.actions.callMethod(() => human.enterFrontOfQueue(this, this.serve.bind(this)));
+            }
+
+            i++;
+        }
+
+        for (let human of this.movingToQueue) {
+            human.queueSpotY = i * this.options.space + this.options.start;
+
+            human.setDrawing(HumanAnimation.WALKING);
+
+            human.actions
+            .rotateTo(0, 1)
+            .moveTo(human.queueSpotX, human.queueSpotY, this.options.movementSpeed)
+            .callMethod(() => human.setDrawing(HumanAnimation.IDLE));
+
+            i++;
+        }
+    }
+
+    private moveOutOfQueue(human: Human, animation: HumanAnimation = HumanAnimation.GLASS): void {
+        this.inQueue.splice(this.inQueue.indexOf(human), 1);
+
+        human.setDrawing(animation);
+        human.leaveQueue(this);
+
+        const rotation = this.options.despawnX < human.x ? -Math.PI / 2 : Math.PI / 2;
+
+        human.actions
+        .rotateBy(rotation, 1)
+        .moveTo(this.options.despawnX, human.y, this.options.movementSpeed)
+        .rotateBy(Math.PI, 1)
+        .moveTo(this.options.despawnX, this.options.despawnY, this.options.movementSpeed)
+        .callMethod(() => human.scene.remove(human));
     }
 
     clear(): void {

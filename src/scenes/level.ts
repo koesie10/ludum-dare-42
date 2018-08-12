@@ -57,8 +57,7 @@ export class BaseLevel extends ex.Scene {
         this.moneyLabel.text = `$${Stats.moneyEarned.toFixed(0)}`;
     }
 
-    protected onServed(serve: Human): void {
-        Stats.addMoney(2);
+    protected onServed(queue: Queue, serve: Human): void {
         if (this.explainText !== null) {
             this.remove(this.explainText);
             this.explainText = null;
@@ -71,12 +70,14 @@ export class BaseLevel extends ex.Scene {
 
     public onActivate() {
         Stats.resetMoney();
-        this.machinery.reset();
-        this.queues.forEach(queue => queue.clear());
-        this.currentSpawn = 0;
-        this.timeUntilNextSpawn = 0;
+        if (this.machinery !== undefined) {
+            this.machinery.reset();
+        }
     }
 
     public onDeactivate() {
+        this.queues.forEach(queue => queue.clear());
+        this.currentSpawn = 0;
+        this.timeUntilNextSpawn = 0;
     }
 }

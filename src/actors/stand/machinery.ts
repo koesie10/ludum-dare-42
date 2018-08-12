@@ -33,7 +33,9 @@ export class Machinery extends ex.Actor {
     }
 
     public reset() {
-        this.contents.reset();
+        if (this.contents !== undefined) {
+            this.contents.reset();
+        }
     }
 
     /**
