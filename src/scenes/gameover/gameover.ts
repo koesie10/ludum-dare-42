@@ -4,15 +4,13 @@ import {Resources} from '@/resources';
 import {Stats} from '@/stats';
 
 export class GameOver extends ex.Scene {
+    private moneyLabel: ex.Label;
+
     public onInitialize(engine: ex.Engine) {
-        const moneyLabel = new ex.Label('$0', 640, 360, null, Resources.Fonts.Money);
-        moneyLabel.fontSize = 60;
-        moneyLabel.text = `$${Stats.moneyEarned}`;
-
-        const textWidth = moneyLabel.getTextWidth(engine.ctx);
-        moneyLabel.x = 640 - textWidth / 2;
-
-        this.add(moneyLabel);
+        this.moneyLabel = new ex.Label('$0', 640, 360, null, Resources.Fonts.Money);
+        this.moneyLabel.fontSize = 60;
+        this.updateMoneyLabel(engine);
+        this.add(this.moneyLabel);
 
         const restartText = new ex.Actor(640, 400, 193, 8);
         restartText.scale.setTo(3, 3);
@@ -27,7 +25,16 @@ export class GameOver extends ex.Scene {
     }
 
     public onActivate(): void {
+        this.updateMoneyLabel(this.engine);
+
         Resources.Sounds.Pour.stop();
         Resources.Sounds.GameOver.play();
+    }
+
+    private updateMoneyLabel(engine: ex.Engine): void {
+        this.moneyLabel.text = `$${Stats.moneyEarned}`;
+
+        const textWidth = this.moneyLabel.getTextWidth(engine.ctx);
+        this.moneyLabel.x = 640 - textWidth / 2;
     }
 }
