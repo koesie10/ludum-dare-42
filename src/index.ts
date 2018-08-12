@@ -5,6 +5,7 @@ import {GameOver} from 'scenes/gameover/gameover';
 import {NextLevel} from 'scenes/nextlevel/nextlevel';
 import {init, Resources} from './resources';
 import {Stats} from '@/stats';
+import {EndGame} from "scenes/endgame/endgame";
 
 class Game extends ex.Engine {
     constructor() {
@@ -17,6 +18,7 @@ class Game extends ex.Engine {
         game.add('level1', new Level1());
         game.add('level2', new Level2());
         game.add('nextlevel', new NextLevel());
+        game.add('endgame', new EndGame());
         game.add('gameover', new GameOver());
 
         const loader = new ex.Loader();

@@ -4,6 +4,7 @@ import {Resources} from '@/resources';
 import {Stats} from '@/stats';
 
 export class GameOver extends ex.Scene {
+    private timeInScene: number;
     private moneyLabel: ex.Label;
 
     public onInitialize(engine: ex.Engine) {
@@ -19,12 +20,20 @@ export class GameOver extends ex.Scene {
     }
 
     update(engine: ex.Engine, delta: number): void {
+        this.timeInScene += delta;
+
+        if (this.timeInScene < 1000) {
+            return;
+        }
+
         if (engine.input.keyboard.isHeld(ex.Input.Keys.Space) || engine.input.pointers.primary.isDragging) {
             this.engine.goToScene(Stats.nextLevel);
         }
     }
 
     public onActivate(): void {
+        this.timeInScene = 0;
+
         this.updateMoneyLabel(this.engine);
 
         Resources.Sounds.Pour.stop();

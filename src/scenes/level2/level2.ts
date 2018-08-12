@@ -97,8 +97,8 @@ export class Level2 extends BaseLevel {
         Stats.addMoney(serve.outOfPatience ? 1 : 2);
 
         if (Stats.moneyEarned >= 60) {
-            Stats.nextLevel = 'level3';
-            this.engine.goToScene('nextlevel');
+            Stats.nextLevel = 'level1';
+            this.engine.goToScene('endgame');
         }
     }
 

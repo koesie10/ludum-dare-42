@@ -1,15 +1,14 @@
 import * as ex from 'excalibur';
 
 import {Resources} from '@/resources';
-import {Stats} from '@/stats';
 
-export class NextLevel extends ex.Scene {
+export class EndGame extends ex.Scene {
     private timeInScene: number;
 
     public onInitialize(engine: ex.Engine) {
         const background = new ex.Actor();
         background.anchor.setTo(0, 0);
-        background.addDrawing(Resources.Textures.NextLevel);
+        background.addDrawing(Resources.Textures.EndGame);
 
         this.add(background);
     }
@@ -22,7 +21,7 @@ export class NextLevel extends ex.Scene {
         }
 
         if (engine.input.keyboard.isHeld(ex.Input.Keys.Space) || engine.input.pointers.primary.isDragging) {
-            this.engine.goToScene(Stats.nextLevel);
+            this.engine.goToScene('level1');
         }
     }
 

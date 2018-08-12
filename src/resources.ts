@@ -17,6 +17,7 @@ export const Resources = {
         Explain1: new ex.Texture(require('./images/explain1.png')),
         Explain2: new ex.Texture(require('./images/explain2.png')),
         NextLevel: new ex.Texture(require('./images/nextlevel.png')),
+        EndGame: new ex.Texture(require('./images/endgame.png')),
     },
     Sounds: {
         Click: new ex.Sound(require('./sounds/click.ogg')),
