@@ -113,6 +113,10 @@ export class Human extends ex.Actor {
         this.on('pointerleave', evt => {
             this.setDrawing(Animation.IDLE);
         });
+
+        if (this.scene.engine.input.pointers.primary.isActorUnderPointer(this)) {
+            this.setDrawing(Animation.SELECTED);
+        }
     }
 
     public startServing(queue: Queue): void {
