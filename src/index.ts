@@ -2,7 +2,9 @@ import * as ex from 'excalibur';
 import {Level1} from 'scenes/level1/level1';
 import {Level2} from 'scenes/level2/level2';
 import {GameOver} from 'scenes/gameover/gameover';
+import {NextLevel} from 'scenes/nextlevel/nextlevel';
 import {init, Resources} from './resources';
+import {Stats} from '@/stats';
 
 class Game extends ex.Engine {
     constructor() {
@@ -14,6 +16,7 @@ class Game extends ex.Engine {
     public start() {
         game.add('level1', new Level1());
         game.add('level2', new Level2());
+        game.add('nextlevel', new NextLevel());
         game.add('gameover', new GameOver());
 
         const loader = new ex.Loader();
@@ -30,7 +33,7 @@ class Game extends ex.Engine {
         return super.start(loader).then(() => {
             init(this);
 
-            game.goToScene('level1');
+            game.goToScene(Stats.nextLevel);
         });
     }
 }

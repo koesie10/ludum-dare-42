@@ -42,11 +42,11 @@ export class Level2 extends BaseLevel {
         ];
 
         this.spawns = [
-            {queueId: 0, timeUntilNextSpawn: 1000},
-            {queueId: 0, timeUntilNextSpawn: 500},
-            {queueId: 1, timeUntilNextSpawn: 2000},
+            {queueId: 0, timeUntilNextSpawn: 5000},
+            {queueId: 0, timeUntilNextSpawn: 200},
+            {queueId: 1, timeUntilNextSpawn: 5000},
             {queueId: 0, timeUntilNextSpawn: 2000},
-            {queueId: 1, timeUntilNextSpawn: 3000},
+            {queueId: 1, timeUntilNextSpawn: 500},
             {queueId: 0, timeUntilNextSpawn: 2000},
             {queueId: 0, timeUntilNextSpawn: 1000},
             {queueId: 1, timeUntilNextSpawn: 500},
@@ -97,7 +97,8 @@ export class Level2 extends BaseLevel {
         Stats.addMoney(serve.outOfPatience ? 1 : 2);
 
         if (Stats.moneyEarned >= 60) {
-            this.engine.goToScene('level3');
+            Stats.nextLevel = 'level3';
+            this.engine.goToScene('nextlevel');
         }
     }
 

@@ -1,5 +1,6 @@
 export class Statistics {
     private _moneyEarned: number = 0;
+    public nextLevel: string = 'level1';
 
     get moneyEarned(): number {
         return this._moneyEarned;

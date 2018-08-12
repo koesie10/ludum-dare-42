@@ -82,7 +82,8 @@ export class Level1 extends BaseLevel {
         Stats.addMoney(2);
 
         if (Stats.moneyEarned >= 2) {
-            this.engine.goToScene('level2');
+            Stats.nextLevel = 'level2';
+            this.engine.goToScene('nextlevel');
         }
     }
 
