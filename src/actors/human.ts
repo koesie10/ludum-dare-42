@@ -114,6 +114,10 @@ export class Human extends ex.Actor {
             this.setDrawing(Animation.IDLE);
         });
 
+        if (!this.scene.engine.input.pointers.primary.lastWorldPos) {
+            return;
+        }
+
         if (this.scene.engine.input.pointers.primary.isActorUnderPointer(this)) {
             this.setDrawing(Animation.SELECTED);
         }

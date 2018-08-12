@@ -21,7 +21,7 @@ export class EndGame extends ex.Scene {
         }
 
         if (engine.input.keyboard.isHeld(ex.Input.Keys.Space) || engine.input.pointers.primary.isDragging) {
-            this.engine.goToScene('level1');
+            this.engine.goToScene('sandbox');
         }
     }
 

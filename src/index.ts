@@ -1,6 +1,7 @@
 import * as ex from 'excalibur';
 import {Level1} from 'scenes/level1/level1';
 import {Level2} from 'scenes/level2/level2';
+import {Sandbox} from 'scenes/sandbox/sandbox';
 import {GameOver} from 'scenes/gameover/gameover';
 import {NextLevel} from 'scenes/nextlevel/nextlevel';
 import {init, Resources} from './resources';
@@ -17,6 +18,7 @@ class Game extends ex.Engine {
     public start() {
         game.add('level1', new Level1());
         game.add('level2', new Level2());
+        game.add('sandbox', new Sandbox());
         game.add('nextlevel', new NextLevel());
         game.add('endgame', new EndGame());
         game.add('gameover', new GameOver());
